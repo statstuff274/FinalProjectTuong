@@ -1,0 +1,262 @@
+---
+title: "EDA - Final Project"
+author: "John Tuong"
+format: html
+execute: 
+  warning: false
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## A Deep Dive: What variables can predict our risk of diabetes?
+
+### An Exploratory Data Analysis (EDA) for Diabetes
+
+#### Introduction
+
+> Diabetes is a group of chronic diseases that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces; insulin is a hormone that regulates blood glucose. In 2022, 14% of adults +18 were living with diabetes, an increase of 7% in 1990. Unmanaged diabetes can be life threatening as it can affect your blood vessels, damaging and rendering different parts of your body useless.
+>
+> Using a diabetes health indicators data set containing health related information from the Behavioral Risk Factor Surveillance System (BRFSS) of the CDC collected from individuals, we're going to create to a model to predict how different health indicators can assess the risk for diabetes. This data set contains 22 variables with 253,680 data points related to various health conditions, individual behaviors, and demographic information. Diabetes_binary indicates whether or not an individual has diabetes and will be our response variable. Some questions we'll be investigating specifically are how high cholestorol, smoking, physical activity, sex, and education affects your risk of diabetes.
+>
+> The purpose of this EDA is explore and investigate the relationships between various health indicators and the risk of diabetes. Creating the model to predict that risk is our ultimate goal. This analysis can help us determine what variables and factors are important in assessing our risk for diabetes and provide important insight on how we can better reduce our risk and can better inform our modeling efforts for predictions.
+
+> Here we will do an EDA for diabetes health indicators by completing the following steps for an EDA:
+
+-   Understanding our data, reading it in
+-   Completing basic validation
+-   Determine the rate of missing values
+-   Clean up the data as needed
+-   Investigate the distributions
+-   Apply transformations and repeating previous steps as needed
+
+### Data
+
+> First we'll load in whatever packages we need and read in the data accordingly.
+
+```{r}
+# Loading packages
+library(tidyverse)
+
+# Then we'll read in our data
+diabetes_data <- read_csv("diabetes_binary_health_indicators_BRFSS2015.csv")
+```
+
+> Now we'll check the data for missingness and column types and values. There are no signs of any NA values, we're good to go.
+
+```{r}
+# Checking for missingness
+diabetes_data %>%
+  is.na() %>%
+  colSums()
+
+# Checking column type and values
+attributes(diabetes_data)$spec
+```
+
+> Now we'll clean the data and correct them to their respective type. Yes/No predictors will be factors. Others with multiple categories, non-continuous ones such as General Health, Education, Income, Age (because it's in groupings of 4) will be ordinal factors and the others (BMI, Mental Health, Physical Health, Age) will become a numeric. Additionally, we'll assign the each applicable level their respective label. Then we'll rename them for ease of reference.
+
+```{r}
+# Mutating to the correct column types
+diabetes_data <- diabetes_data %>%
+  mutate(
+    Diabetes_binary = factor(Diabetes_binary, levels = c(0, 1), labels = c("No", "Yes")),
+    HighBP = factor(HighBP, levels = c(0, 1), labels = c("No", "Yes")),
+    HighChol = factor(HighChol, levels = c(0, 1), labels = c("No", "Yes")),
+    CholCheck = factor(CholCheck, levels = c(0, 1), labels = c("No", "Yes")),
+    BMI = as.numeric(BMI),
+    Smoker = factor(Smoker, levels = c(0, 1), labels = c("No (Smoker)", "Yes (Smoker)")),
+    Stroke = factor(Stroke, levels = c(0, 1), labels = c("No", "Yes")),
+    HeartDiseaseorAttack = factor(HeartDiseaseorAttack, levels = c(0, 1), labels = c("No", "Yes")),
+    PhysActivity = factor(PhysActivity, levels = c(0, 1), labels = c("No", "Yes")),
+    Fruits = factor(Fruits, levels = c(0, 1), labels = c("No", "Yes")),
+    Veggies = factor(Veggies, levels = c(0, 1), labels = c("No", "Yes")),
+    HvyAlcoholConsump = factor(HvyAlcoholConsump, levels = c(0, 1), labels = c("No", "Yes")),
+    AnyHealthcare = factor(AnyHealthcare, levels = c(0, 1), labels = c("No", "Yes")),
+    NoDocbcCost = factor(NoDocbcCost, levels = c(0, 1), labels = c("No", "Yes")),
+    GenHlth = factor(GenHlth, levels = c(1,2,3,4,5), labels = c("excellent", "very good", "good", "fair", "poor"), ordered = T),
+    MentHlth = as.numeric(MentHlth),
+    PhysHlth = as.numeric(PhysHlth),
+    DiffWalk = factor(DiffWalk, levels = c(0, 1), labels = c("No", "Yes")),
+    Sex = factor(Sex, levels = c(0, 1), labels = c("female", "male")),
+    Age = as.numeric(Age),
+    Education = factor(Education, levels = c(1,2,3,4,5,6), labels = c("no school or only kindergarten", "elementary", "some high school", "high school or GED", "some college or technical school", "college grad"), ordered = T),
+    Income = factor(Income, levels = c(1,2,3,4,5,6,7,8), labels = c("less than $10K", "$10K to $15K", "$15K to $20K", "$20K to $25K", "$25K to $35K", "$35K to $50K", "$50K to $75K", "more than $75K"), ordered = T)
+  )
+
+# Checking column types
+str(diabetes_data)
+```
+
+```{r}
+# Renaming for ease of reference
+diabetes_data <- diabetes_data %>%
+  rename('bp' = 'HighBP',
+         'chol' = 'HighChol',
+         'cholcheck' = 'CholCheck',
+         'bmi' = 'BMI',
+         'smoke' = 'Smoker',
+         'stroke' = 'Stroke',
+         'heartdiseaseorattack' = 'HeartDiseaseorAttack',
+         'physical' = 'PhysActivity',
+         'fruit' = 'Fruits',
+         'veg' = 'Veggies',
+         'alc' = 'HvyAlcoholConsump',
+         'healthcare' = 'AnyHealthcare',
+         'doc' = 'NoDocbcCost',
+         'genhlth' = 'GenHlth',
+         'menthlth' = 'MentHlth',
+         'physhlth' = 'PhysHlth',
+         'diffwalk' = 'DiffWalk',
+         'sex' = 'Sex',
+         'age' = 'Age',
+         'education' = 'Education',
+         'income' = 'Income')
+```
+
+### Summarizations
+
+> Now we'll investigate the distributions with some basic numerical summaries and graphical visualizations such as summaries, contingency tables, correlations, and graphs.
+
+```{r}
+# Producing a summary to give us the levels and the respective data points for each level and checking for total number of those with diabetes
+summary(diabetes_data)
+
+count(diabetes_data)
+```
+
+-   Here we can see that there's a total of 253,680 observations in this data set. Of those observations, there are a total of 35,346 (\~14%) people with diabetes. Considering our sample, the mean observation for BMI is 28.38 with minimum or 12.00 and a max value of 98. The max value seems to be an outlier given the rest of the numbers, which could potentially skew the overall distribution and might mean we have to examine it more closely. Both mental and physical health explores how many days the individual felt "not good" in the past 30 days have means of 3.19 and 4.24, respectively. These two variables also have individuals indicating that didn't good mentally and/or physically for 30 days, which seem to be outliers... something else we might have to take a closer look at.
+
+```{r}
+# Contingency tables
+table("diabetes?" = diabetes_data$Diabetes_binary, "cholesterol?" = diabetes_data$chol,"smoker?" = diabetes_data$smoke)
+table("diabetes?" = diabetes_data$Diabetes_binary,"physical activity in 30 days?" = diabetes_data$physical)
+table("diabetes?" = diabetes_data$Diabetes_binary,"sex?" = diabetes_data$sex)
+table("diabetes?" = diabetes_data$Diabetes_binary,"education level?" = diabetes_data$education)
+```
+
+-   Looking at the contingency tables there's a lot we can take a look at. There's a total of 12,782 individuals that have high cholesterol and and smoke showcasing a potential relationship between these variables with diabetes prevalence. The results show that those who've participate in some form of physical activity that do not have no diabetes are 169,633 individuals. Physical activity is associated with a lower diabetes prevalence, potentially reinforcing how important it is to be active. As for sex, when looking at the distribution for females and males, they're pretty consistent in terms of total proportion in the data set for those who do or do not have diabetes. For education, it does seem that with more schooling, there's a decrease of those, proportionally, who have diabetes compared to those who have less schooling. This could reinforce that level of education could be important in diabetes prevention.
+
+```{r}
+# Correlations
+diabetes_data %>%
+  select(where(is.numeric)) %>%
+  cor()
+```
+
+-   We can see that BMI, body mass index, have weak positive correlations with both mental (0.0853) and physical health (0.121), meaning that there is only a slight tendency for those with a higher bmi to report "not good" days of mental and physical health. This could potentially mean that BMI alone isn't a good predictor of both mental and physical health days and we may have to look at other variables. The largest association we see is between mental and physical health with a correlation of 0.354. This is a moderate positive correlation, meaning that they're somewhat related, indicating that those who reported more subpar mental health days, also reported not great physical health days. This suggests that those who typically experience poor mental health days tend to experience poor physical health days, possibly due to stress, depression, problems with emotions, etc. Next we'll start creating plots and graphs to observe our data and relationships visually, looking at various distributions and relationship.
+
+```{r}
+# Side by Side bar plot of physical activity by diabetes status
+ggplot(diabetes_data, aes(x = physical, fill = Diabetes_binary)) +
+  geom_bar(position = "dodge") +
+  ggtitle("Physical Activity by Diabetes Status",
+          subtitle = "Side by Side Bar Plot") +
+  labs(x = "Physical Activity", y = "Count") +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+-   As seen above, this represents those who have participated in some physical activity within the last 30 days and diabetes status. Overall, there are less people who do not complete physical activity compared to those who do; however, there proportion of those that don't do physical activity and have diabetes is higher than those who do complete physical activity and have diabetes. Additionally, there's a large amount of individuals that do physical activity and don't have diabetes.
+
+```{r}
+# Stacked bar plot of high cholesterol by diabetes with a smokers status facet
+ggplot(diabetes_data, aes(x = chol, fill = Diabetes_binary)) +
+  geom_bar(position = "stack") +
+  facet_wrap(~ smoke) +
+  ggtitle("High Cholesterol by Diabetes Status \n with Smokers Status Facet",
+          subtitle = "Stacked Bar Plot") +
+  labs(x = "High Cholesterol", y = "Count (Individuals and their Diabetes Status)", fill = "Diabetes Status") +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+-   Here stacked bar plots do not represent proportion but rather total count. Here can see that the total amount of people who don't smoke and have high cholesterol are higher than those who do smoke, whereas, the other 3 categories have a similar total count. Of the total counts, we can see that those with those high cholesterol, both smokers and non-smokers, have the higher counts of those with diabetes.
+
+```{r}
+# Boxplot for mental health and high cholesterol
+ggplot(diabetes_data, aes(x = chol, y = physhlth, fill = Diabetes_binary)) +
+  geom_boxplot() +
+  ggtitle("High Cholesterol by Subar Physical Health (of Past 30 Days) \n by Diabetes Status",
+          subtitle = "Box Plot") +
+  labs(x = "High Cholesterol", y = "Subpar Physical Health (by Days)", fill = "Diabetes Status") +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+-   This shows that those with high cholesterol for both with and without diabetes report more days where their physical health is "not good." When looking at all categories, we can clearly see the horizontal mean line for those with high cholesterol and diabetes indicating that these individuals tend to report a slightly higher number of "not great" physical days compared to the other categories, which have their mean line at 0. The dots indicate data points that are considered to be outliers.
+
+```{r}
+# Filled bar plot of education level by diabetes status
+ggplot(diabetes_data, aes(x = education, fill = Diabetes_binary)) +
+  geom_bar(position = "fill") +
+  ggtitle("Education Level by Diabetes Status",
+          subtitle = "Filled Bar Plot") +
+  labs(x = "Education Levels", y = "Proportion", fill = "Diabetes Status") +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+-   This filled bar plot above shows the proportion of education by diabetes status. Red represents the individual has no diabetes and blue represents yes. As seen above, those with no schooling or only kindergarten and elementary schooling have the highest proportions of those with diabetes. As previously mentioned, this could potentially indicate that more schooling or education could help individuals to be better informed regarding diabetes risks.
+
+```{r}
+# Filled bar plot sex with diabetes status and general health facet
+ggplot(diabetes_data, aes(x = sex, fill = Diabetes_binary)) +
+  geom_bar(position = "fill") +
+  facet_wrap(~ genhlth) +
+  ggtitle("Sex by Diabetes Status \n with General Health Status Facet",
+          subtitle = "Filled Bar Plot") +
+  labs(x = "Sex", y = "Count (Individuals and their Diabetes Status)", fill = "Diabetes Status") +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+-   The above filled bar plot looks at the proportion of sex and general health status based on diabetes status. For the most part, for each general health status there are roughly a similar amount of those who have diabetes. As seen, those who reported fair and poor health status have the highest proportion of individuals who have diabetes compared to those whom reported excellent or very good health.
+
+```{r}
+# Histogram of physical health across diabetes status
+ggplot(diabetes_data, aes(x = physhlth, fill = Diabetes_binary)) +
+  geom_histogram(alpha = 0.2, binwidth = 1, position = 'identity') +
+  geom_vline(aes(xintercept = mean(physhlth)),
+            color="blue", linetype = "dashed", linewidth = 1) +
+  ggtitle("Subpar Physical Health (of Past 30 Days) by \n across Diabetes Status",
+          subtitle = "Histogram Plot") +
+  labs(x = "Subpar Physical Health (by Days)", y = "Count (Individuals with Diabetes Status)", fill = "Diabetes Status") +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+-   Here the histogram shows that majority, a little less than 150,000, of individuals report 0 "not good" physical health days irregardless of diabetes status, meaning that most people report good physical health days. However it's interesting to note that the next highest peak is of individuals reporting having up to 30 days of "not good" physical health days. From the dashed blue line, we can see that the mean reported subpar days for the sample is around 4 days of the month.
+
+```{r}
+# Hexbin plot of mental health and physical health across diabetes status
+ggplot(diabetes_data, aes(x = menthlth, y = physhlth, fill = Diabetes_binary)) +
+  geom_hex() +
+  ggtitle("Subpar Mental Health (of Past 30 Days) by \n Subpar Physical Health (of Past 30 Days) \n across Diabetes Status",
+          subtitle = "Hexbin Plot") +
+  labs(x = "Mental Health (by Days)", y = "Physical Health (by Days)", fill = "Diabetes Status") +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+
+```
+
+-   Here we have a hexbin plot of "not good" mental health days by "not good" physical health days across diabetes status. Each bin is a hexagon and the color represents the number of data points within each bin. For the lower reported mental and physical days (under 10), there is a concentration of those people that have diabetes. There's a significant spread across both axes, showing variability across the diabetes status. Additionally, there are gaps in certain areas of the plot indicating there's none or not many data points in the respective bin.
+
+```{r}
+# Density plot of BMI by diabetes status
+ggplot(diabetes_data, aes(x = bmi, fill = Diabetes_binary)) +
+  geom_density(alpha = 0.6) +
+  geom_vline(aes(xintercept = mean(bmi)),
+            color="blue", linetype = "dashed", linewidth = 1) +
+  ggtitle("BMI by Diabetes Status",
+          subtitle = "Density Plot") +
+  labs(x = "BMI", y = "Density", fill = "Diabetes Status") +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+-   Last, we have density plot! This density plot visualizes the distribution of BMI values for those with and without diabetes. Here we can see that the peak for both diabetes status are around a BMI of 28, indicating that both groups have most individuals at a BMI of 28. The dashed blue line indicates the mean of around 28 for BMI. When looking at the density for those without diabetes (red), the curve is more tall and narrow compared to the yes diabetes status, indicating that people without diabetes tend to have lower BMIs. Those with diabetes (blue) density curve shifted more to the right indicated that individuals with diabetes tend to have a higher BMI.
+
+> That's a lot of interesting variables and distributions that we've looked at! I never really thought about all of the potential variables that could perhaps contribute to or reduce the risk of obtaining diabetes. Now that we've completed our EDA, we're going to create our modeling file that'll help us predict our diabetes risk.
+
+[Click here for the Modeling Page](Modeling.html)

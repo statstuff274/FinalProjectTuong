@@ -1,0 +1,8 @@
+---
+title: "Model Fitting - Final Project"
+author: "John Tuong"
+format: html
+editor: visual
+---
+
+## Modeling
