@@ -2,7 +2,107 @@
 title: "Model Fitting - Final Project"
 author: "John Tuong"
 format: html
+execute: 
+  warning: false
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
 
-## Modeling
+## Modeling: How can we optimize predictions?
+
+### Model Fitting and Selection in Diabetes Risk Prediction
+
+#### Introduction
+
+> As we move from our EDA and understanding our variables, we're now in the phase of fitting and selecting a 'best' model to predict diabetes risk. Throughout this, we'll be using tidymodels and working to split our previous explored data, creating a CV fold split making recipes and identify the 'best' model through model fitting, selection, and tuning by training our model on our training/test split using a 70/30 split. This allows us to assess how our model would perform on unseen data. We'll look to ensure we don't underfit or overfit our model, which both lead to unreliable prediction models. Some of the model trees we'll be using are the classification tree and the random forest tree, non-ensemble and ensemble method, respectively. I'll give an in-depth explanation of those two models when we get to that part of the process. We'll obtain the two best models for each model type, compare both models on the test set and then choose an overall winner!
+>
+> Due to the rise of diabetes, finding a good prediction model is important because it allows researchers to extract meaningful insights from data, make accurate predictions, which leads to better informed decisions based on patterns found in the data to potentially better approach diabetes risk. Hopefully we can continue to make advances in order tackle these real world issues. With that - let's begin!
+
+### Starting off
+
+> As always, we'll need to load in the necessary packages. In this case we'll be using tidyverse.
+
+```{r}
+# Load packages
+# install.packages("tidymodels")
+library(tidyverse)
+library(tidymodels)
+```
+
+### Splitting the Data
+
+> Now we're going to split the data using a 70/30 test/training split. As well as create a 5 fold CV split.
+
+```{r}
+# Splitting data and creating a 5 fold CV
+set.seed(11)
+diabetes_split <- initial_split(diabetes_data, prop = 0.70, strata = Diabetes_binary)
+diabetes_train <- training(diabetes_split)
+diabetes_test <- testing(diabetes_split)
+diabetes_5_fold <- vfold_cv(diabetes_train, 5)
+```
+
+### Fitting MLR Models
+
+> Here we'll start by creating our recipe using 5 predictor variables (high cholesterol, smoker status, sex, physical activity, and education). We can use the same recipe for the classification tree and the random tree forest.
+
+```{r}
+#Creating the recipe
+diabetes_recipe <- recipe(Diabetes_binary ~ chol + smoke + sex + physical + education, data = diabetes_train) %>%
+  step_dummy(chol, smoke, sex, physical, education) %>%
+  step_normalize(all_numeric())
+```
+
+> Now that we have our recipe we're going to fit a classification tree. In short, a classification tree model, also known as a logistic regression model, is a commonly used model with a binary response. It's used to predict binary outcomes, and in this case its goal is to classify an observation into a category: Diabetes_binary being the observation, yes or no being the categories. It's a supervised learning method and a type of non-ensemble tree. It's a supervised learning method meaning that it uses labeled (specified inputs, called features, and outputs, which are labels) data sets to train models to predict outcomes and recognize patterns. Non-ensemble meaning that this model only makes predictions on a single model rather than combining predictions from multiple models, such as random forest tree models. In order words, its standard algorithm for fitting trees are in a sequential (one split at a time) manner. How it works is it attempts to split up predictor space into regions/subsets. On each region, a different prediction is made. For every possible value of each predictor, it finds the squared error loss based on splitting the data around that point. To build and fit the tree, the splitting process uses recursive binary splitting, a greedy algorithm, to grow on the training data, only stopping when each node has fewer than some minimum number (min_n) of observations or maximum depth (tree_depth) of the tree, both of which are tuning parameters for classification trees. The number of nodes/splits are chosen by using the training/test set or cross validation. Tree are then pruned by cost_complexity pruning (cost_complexty = tune()), another tuning parameter, to not overfit the data. The common metrics to qunatify prediction quality are accuracy, misclassification rate, and log-loss. Some advantages of classification trees are that they are easy to interpret and predictors don't need to be scaled. However, some disadvantages are that they small changes in data can change the tree drastically, there's no optimal algoritm for choosing splits that exists, and need to either prune or use cross validation in order to determine the model. With that, we'll now start by setting up and fitting the classification with varying values for the complexity parameter and choose the best model.
+
+```{r}
+# Setting up our classification tree model fit.
+tree_spec <- decision_tree(cost_complexity = tune(),
+                           tree_depth = tune(),
+                           min_n = 10) %>%
+  set_engine("rpart") %>%
+  set_mode("classification")
+
+# Creating the workflow
+tree_wkf <- workflow() %>%
+  add_recipe(diabetes_recipe) %>%
+  add_model(tree_spec)
+
+# Fitting the model  grid_regular, creating a hyperparameter grid. Here we're setting the levels of cost_complexity and tree_depth to 5 and 5, respectively, resulting in a total of 25 (5 x 5) different combinations of parameters to be evaluated.
+tree_grid <- grid_regular(cost_complexity(),
+                          tree_depth(),
+                          levels = c(5, 5))
+
+# Model tuning with hyperparameter grid
+tree_fits <- tree_wkf %>%
+  tune_grid(resamples = diabetes_5_fold,
+            grid = tree_grid,
+            metrics = metric_set(mn_log_loss))
+
+# Collecting metrics to see which tuning parameter is the best
+tree_fits %>%
+  collect_metrics() %>%
+  filter(.metric == "mn_log_loss") %>%
+  arrange(mean)
+
+# Selecting best log-loss
+lowest_log_tree <- tree_fits %>%
+  select_best(metric = "mn_log_loss")
+lowest_log_tree
+```
+
+-   While I'm not sure if we were supposed to keep all the parameter values that I used, after about 10 or so runs, I started to keep track of what parameter values I had previously used.
+    -   log-loss = 0.404; complexity = 10, depth = 5, min_n = 20
+    -   log-loss = 0.399; complexity = 5, depth = 5, min_n = 15
+    -   log-loss = 0.404; complexity = 5, depth = 5, min_n = 30
+    -   log-loss = 0.394; complexity = 5, depth = 5, min_n = 10
+    -   log-loss = 0.394; complexity = 5, depth = 5, min_n = 5
+    -   log-loss = 0.394; complexity = 5, depth = 5, min_n = 20
+    -   log-loss = 0.404; complexity = 20, depth = 5, min_n = 35
+    -   log-loss = 0.404; complexity = 35, depth = 10, min_n = 30    
+    
+- So after a while of running and constant tuning, my best log-loss value was 0.394 for the classification model.
+
+    
+    
