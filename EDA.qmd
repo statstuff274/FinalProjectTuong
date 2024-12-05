@@ -80,7 +80,7 @@ diabetes_data <- diabetes_data %>%
     DiffWalk = factor(DiffWalk, levels = c(0, 1), labels = c("No", "Yes")),
     Sex = factor(Sex, levels = c(0, 1), labels = c("female", "male")),
     Age = as.numeric(Age),
-    Education = factor(Education, levels = c(1,2,3,4,5,6), labels = c("no school or only kindergarten", "elementary", "some high school", "high school or GED", "some college or technical school", "college grad"), ordered = T),
+    Education = factor(Education, levels = c(1,2,3,4,5,6), labels = c("no school or only kindergarten", "elementary", "some high school", "high school or GED", "some college or technical school", "college grad")),
     Income = factor(Income, levels = c(1,2,3,4,5,6,7,8), labels = c("less than $10K", "$10K to $15K", "$15K to $20K", "$20K to $25K", "$25K to $35K", "$35K to $50K", "$50K to $75K", "more than $75K"), ordered = T)
   )
 

@@ -21,13 +21,17 @@ editor_options:
 
 ### Starting off
 
-> As always, we'll need to load in the necessary packages. In this case we'll be using tidyverse.
+> As always, we'll need to load in the necessary packages. In this case we'll be using tidyverse and some others.
 
 ```{r}
 # Load packages
 # install.packages("tidymodels")
+# install.packages("ranger")
+# install.packages("parsnip")
 library(tidyverse)
 library(tidymodels)
+library(ranger)
+library(parsnip)
 ```
 
 ### Splitting the Data
@@ -45,16 +49,26 @@ diabetes_5_fold <- vfold_cv(diabetes_train, 5)
 
 ### Fitting MLR Models
 
-> Here we'll start by creating our recipe using 5 predictor variables (high cholesterol, smoker status, sex, physical activity, and education). We can use the same recipe for the classification tree and the random tree forest.
+> Here we'll start by creating our recipe using 5 predictor variables (high cholesterol, smoker status, sex, physical activity, and education). We can use the same recipe for the classification tree and the random tree forest. Additionally, I have created a subsetted data set using 20% of the total data set in order to trim model fitting time (I didn't do this at the beginning and it took a very long time).
 
 ```{r}
-#Creating the recipe
+# Creating the recipe
 diabetes_recipe <- recipe(Diabetes_binary ~ chol + smoke + sex + physical + education, data = diabetes_train) %>%
   step_dummy(chol, smoke, sex, physical, education) %>%
   step_normalize(all_numeric())
 ```
 
-> Now that we have our recipe we're going to fit a classification tree. In short, a classification tree model, also known as a logistic regression model, is a commonly used model with a binary response. It's used to predict binary outcomes, and in this case its goal is to classify an observation into a category: Diabetes_binary being the observation, yes or no being the categories. It's a supervised learning method and a type of non-ensemble tree. It's a supervised learning method meaning that it uses labeled (specified inputs, called features, and outputs, which are labels) data sets to train models to predict outcomes and recognize patterns. Non-ensemble meaning that this model only makes predictions on a single model rather than combining predictions from multiple models, such as random forest tree models. In order words, its standard algorithm for fitting trees are in a sequential (one split at a time) manner. How it works is it attempts to split up predictor space into regions/subsets. On each region, a different prediction is made. For every possible value of each predictor, it finds the squared error loss based on splitting the data around that point. To build and fit the tree, the splitting process uses recursive binary splitting, a greedy algorithm, to grow on the training data, only stopping when each node has fewer than some minimum number (min_n) of observations or maximum depth (tree_depth) of the tree, both of which are tuning parameters for classification trees. The number of nodes/splits are chosen by using the training/test set or cross validation. Tree are then pruned by cost_complexity pruning (cost_complexty = tune()), another tuning parameter, to not overfit the data. The common metrics to qunatify prediction quality are accuracy, misclassification rate, and log-loss. Some advantages of classification trees are that they are easy to interpret and predictors don't need to be scaled. However, some disadvantages are that they small changes in data can change the tree drastically, there's no optimal algoritm for choosing splits that exists, and need to either prune or use cross validation in order to determine the model. With that, we'll now start by setting up and fitting the classification with varying values for the complexity parameter and choose the best model.
+```{r}
+# Creating the subset data set
+subset_data <- diabetes_data[sample(1:nrow(diabetes_data), 50736, replace = FALSE),]
+
+# Creating the subset data set
+subset_recipe <- recipe(Diabetes_binary ~ chol + smoke + sex + physical + education, data = subset_data) %>%
+  step_dummy(chol, smoke, sex, physical, education) %>%
+  step_normalize(all_numeric())
+```
+
+> Now that we have our recipe we're going to fit a classification tree. In short, a classification tree model, also known as a logistic regression model, is a commonly used model with a binary response. It's used to predict binary outcomes, and in this case its goal is to classify an observation into a category: Diabetes_binary being the observation, yes or no being the categories. It's a supervised learning method and a type of non-ensemble tree. It's a supervised learning method meaning that it uses labeled (specified inputs, called features, and outputs, which are labels) data sets to train models to predict outcomes and recognize patterns. Non-ensemble meaning that this model only makes predictions on a single model rather than combining predictions from multiple models, such as random forest tree models. In order words, its standard algorithm for fitting trees are in a sequential (one split at a time) manner. How it works is it attempts to split up predictor space into regions/subsets. On each region, a different prediction is made. For every possible value of each predictor, it finds the squared error loss based on splitting the data around that point. To build and fit the tree, the splitting process uses recursive binary splitting, a greedy algorithm, to grow on the training data, only stopping when each node has fewer than some minimum number (min_n) of observations or maximum depth (tree_depth) of the tree, both of which are tuning parameters for classification trees. The number of nodes/splits are chosen by using the training/test set or cross validation. Tree are then pruned by cost_complexity pruning (cost_complexty = tune()), another tuning parameter, to not over fit the data. The common metrics to quantify prediction quality are accuracy, misclassification rate, and log-loss. Some advantages of classification trees are that they are easy to interpret and predictors don't need to be scaled. However, some disadvantages are that they small changes in data can change the tree drastically, there's no optimal algorithm for choosing splits that exists, and need to either prune or use cross validation in order to determine the model. With that, we'll now start by setting up and fitting the classification with varying values for the complexity parameter and choose the best model.
 
 ```{r}
 # Setting up our classification tree model fit.
@@ -100,9 +114,47 @@ lowest_log_tree
     -   log-loss = 0.394; complexity = 5, depth = 5, min_n = 5
     -   log-loss = 0.394; complexity = 5, depth = 5, min_n = 20
     -   log-loss = 0.404; complexity = 20, depth = 5, min_n = 35
-    -   log-loss = 0.404; complexity = 35, depth = 10, min_n = 30    
-    
-- So after a while of running and constant tuning, my best log-loss value was 0.394 for the classification model.
+    -   log-loss = 0.404; complexity = 35, depth = 10, min_n = 30
+-   So after a while of running and constant tuning, my best log-loss value was 0.394 for the classification model. Now we'll move onto fitting the random forest tree model!
 
-    
-    
+> A random forest tree model, also a supervised learning method, uses something called bootstrapping aggregation to take a train multiple models on a bunch of different subsets of the data and uses replacement (can use the same data points in different models when creating more) and then takes all of the metrics from those models and averages them to obtain the error metric. The model chooses to use a different mix of predictor variables for every time a different subset of data is being trained. Due to this reason it creates much more diversity and reduces variance between model predictions,leading to higher accuracy. Random forest tree models are highly accurate predictive models and can be used for both classification and regression tasks. We might want use a random forest tree model when we: want to reduce over fitting with more diversity (good when we have a decision tree that over fits the data since the average results of many trees could result in a more stable model and higher accuracy), if we have high dimensional data/a large number of features and complex feature relationships (known as feature importance, the model can measure importance of features, making it important to understand which ones have the most impact on predictions). Some disadvantages of using a random forest model is that due to less interpretability (because it's an ensemble, it's hard to interpret compared to a single tree), computational complexity/costs (since there are multiple trees being trained, and if it's a large data set, it takes a lot of computing power to aggregate its predictions). With that, we'll now start by setting up and fitting the random forest tree model.
+
+```{r}
+# Setting up our random forest tree model
+rf_spec <- rand_forest(mtry = tune()) %>%
+  set_engine("ranger", importance = "impurity") %>%
+  set_mode("classification")
+
+# Creating the workflow
+rf_wkf <- workflow() %>%
+  add_recipe(diabetes_recipe) %>%
+  add_model(rf_spec)
+
+# Fitting the model with tune_grid()
+rf_fit <- rf_wkf %>%
+  tune_grid(resamples = diabetes_5_fold,
+            grid = 15,
+            metrics = metric_set(mn_log_loss))
+
+# Collecting metrics to see which tuning parameter is the best
+rf_fit %>%
+  collect_metrics() %>%
+  filter(.metric == "mn_log_loss") %>%
+  arrange(mean)
+
+# Selecting best log-loss
+lowest_rf <- rf_fit %>%
+  select_best(metric = "mn_log_loss")
+lowest_rf
+```
+
+-   This is just to keep track of what values I've used to adjust.
+
+    -   log-loss .373; grid = 2
+    -   log-loss .373; mtry = 6, grid = 2
+    -   log-loss .373; mtry = 5, grid = 10
+    -   log-loss .373; mtry = 6, grid = 15
+
+-   For the random forest tree model, our best fit had a log-loss of 0.373.
+
+> Now that we've found the best log-loss for both the classification tree and the random forest tree, we can work on our final model selection. We're going to compare both models on the test set and declare which one is better.
