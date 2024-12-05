@@ -125,7 +125,16 @@ summary(diabetes_data)
 count(diabetes_data)
 ```
 
--   Here we can see that there's a total of 253,680 observations in this data set. Of those observations, there are a total of 35,346 (\~14%) people with diabetes. Considering our sample, the mean observation for BMI is 28.38 with minimum or 12.00 and a max value of 98. The max value seems to be an outlier given the rest of the numbers, which could potentially skew the overall distribution and might mean we have to examine it more closely. Both mental and physical health explores how many days the individual felt "not good" in the past 30 days have means of 3.19 and 4.24, respectively. These two variables also have individuals indicating that didn't good mentally and/or physically for 30 days, which seem to be outliers... something else we might have to take a closer look at.
+-   Here we can see that there's a total of 253,680 observations in this data set. Of those observations, there are a total of 35,346 (\~14%) people with diabetes. Considering our sample, the mean observation for BMI is 28.38 with minimum or 12.00 and a max value of 98. The max value seems to be an outlier given the rest of the numbers, which could potentially skew the overall distribution and might mean we have to examine it more closely. Both mental and physical health explores how many days the individual felt "not good" in the past 30 days have means of 3.19 and 4.24, respectively. These two variables also have individuals indicating that didn't good mentally and/or physically for 30 days, which seem to be outliers... something else we might have to take a closer look at. Below we're going to create some contingency tables to find the most common values for our variables and look at some additional contingency tables.
+
+```{r}
+# Most common values from contingency tables
+table("high cholesterol?" = diabetes_data$chol) # 0, No high chol = more common
+table("smoking status?" = diabetes_data$smoke) # 0, No smoking = more common
+table("physical activity?" = diabetes_data$physical) # 1, yes = more common
+table("sex?" = diabetes_data$sex) # 0, female = more common
+table("education level?" = diabetes_data$education) # 6, college grade = common
+```
 
 ```{r}
 # Contingency tables
