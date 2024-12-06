@@ -126,7 +126,7 @@ function() {
   list(
     example1 = "/pred?chol=Yes&smoke=No&sex=Female&physical=Yes&education=6",
     example2 = "/pred?chol=Yes&smoke=No&sex=Male&physical=No&education=4",
-    example3 = "/pred?chol=No&smoke=Yes&sex=No&physical=Yes&education=5"
+    example3 = "/pred?chol=No&smoke=Yes&sex=Male&physical=Yes&education=5"
   )
 }
 
