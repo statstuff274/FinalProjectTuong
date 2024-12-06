@@ -249,7 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">DiffWalk =</span> <span class="fu">factor</span>(DiffWalk, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)),</span>
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sex =</span> <span class="fu">factor</span>(Sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"female"</span>, <span class="st">"male"</span>)),</span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">Age =</span> <span class="fu">as.numeric</span>(Age),</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">Education =</span> <span class="fu">factor</span>(Education, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"no school or only kindergarten"</span>, <span class="st">"elementary"</span>, <span class="st">"some high school"</span>, <span class="st">"high school or GED"</span>, <span class="st">"some college or technical school"</span>, <span class="st">"college grad"</span>), <span class="at">ordered =</span> T),</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">Education =</span> <span class="fu">factor</span>(Education, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"no school or only kindergarten"</span>, <span class="st">"elementary"</span>, <span class="st">"some high school"</span>, <span class="st">"high school or GED"</span>, <span class="st">"some college or technical school"</span>, <span class="st">"college grad"</span>)),</span>
 <span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">Income =</span> <span class="fu">factor</span>(Income, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"less than $10K"</span>, <span class="st">"$10K to $15K"</span>, <span class="st">"$15K to $20K"</span>, <span class="st">"$20K to $25K"</span>, <span class="st">"$25K to $35K"</span>, <span class="st">"$35K to $50K"</span>, <span class="st">"$50K to $75K"</span>, <span class="st">"more than $75K"</span>), <span class="at">ordered =</span> T)</span>
 <span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
@@ -277,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  $ DiffWalk            : Factor w/ 2 levels "No","Yes": 2 1 2 1 1 1 1 2 2 1 ...
  $ Sex                 : Factor w/ 2 levels "female","male": 1 1 1 1 1 2 1 1 1 2 ...
  $ Age                 : num [1:253680] 9 7 9 11 11 10 9 11 9 8 ...
- $ Education           : Ord.factor w/ 6 levels "no school or only kindergarten"&lt;..: 4 6 4 3 5 6 6 4 5 4 ...
+ $ Education           : Factor w/ 6 levels "no school or only kindergarten",..: 4 6 4 3 5 6 6 4 5 4 ...
  $ Income              : Ord.factor w/ 8 levels "less than $10K"&lt;..: 3 1 8 6 4 8 7 4 1 3 ...</code></pre>
 </div>
 </div>
@@ -374,11 +374,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <ul>
-<li>Here we can see that there’s a total of 253,680 observations in this data set. Of those observations, there are a total of 35,346 (~14%) people with diabetes. Considering our sample, the mean observation for BMI is 28.38 with minimum or 12.00 and a max value of 98. The max value seems to be an outlier given the rest of the numbers, which could potentially skew the overall distribution and might mean we have to examine it more closely. Both mental and physical health explores how many days the individual felt “not good” in the past 30 days have means of 3.19 and 4.24, respectively. These two variables also have individuals indicating that didn’t good mentally and/or physically for 30 days, which seem to be outliers… something else we might have to take a closer look at.</li>
+<li>Here we can see that there’s a total of 253,680 observations in this data set. Of those observations, there are a total of 35,346 (~14%) people with diabetes. Considering our sample, the mean observation for BMI is 28.38 with minimum or 12.00 and a max value of 98. The max value seems to be an outlier given the rest of the numbers, which could potentially skew the overall distribution and might mean we have to examine it more closely. Both mental and physical health explores how many days the individual felt “not good” in the past 30 days have means of 3.19 and 4.24, respectively. These two variables also have individuals indicating that didn’t good mentally and/or physically for 30 days, which seem to be outliers… something else we might have to take a closer look at. Below we’re going to create some contingency tables to find the most common values for our variables and look at some additional contingency tables.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Contingency tables</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"diabetes?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>Diabetes_binary, <span class="st">"cholesterol?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>chol,<span class="st">"smoker?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>smoke)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Most common values from contingency tables</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"high cholesterol?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>chol) <span class="co"># 0, No high chol = more common</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>high cholesterol?
+    No    Yes 
+146089 107591 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"smoking status?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>smoke) <span class="co"># 0, No smoking = more common</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>smoking status?
+ No (Smoker) Yes (Smoker) 
+      141257       112423 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"physical activity?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>physical) <span class="co"># 1, yes = more common</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>physical activity?
+    No    Yes 
+ 61760 191920 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"sex?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>sex) <span class="co"># 0, female = more common</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sex?
+female   male 
+141974 111706 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"education level?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>education) <span class="co"># 6, college grade = common</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>education level?
+  no school or only kindergarten                       elementary 
+                             174                             4043 
+                some high school               high school or GED 
+                            9478                            62750 
+some college or technical school                     college grad 
+                           69910                           107325 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Contingency tables</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"diabetes?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>Diabetes_binary, <span class="st">"cholesterol?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>chol,<span class="st">"smoker?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>smoke)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>, , smoker? = No (Smoker)
 
@@ -394,21 +431,21 @@ diabetes?    No   Yes
       No  53521 40585
       Yes  5535 12782</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"diabetes?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>Diabetes_binary,<span class="st">"physical activity in 30 days?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>physical)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"diabetes?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>Diabetes_binary,<span class="st">"physical activity in 30 days?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>physical)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         physical activity in 30 days?
 diabetes?     No    Yes
       No   48701 169633
       Yes  13059  22287</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"diabetes?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>Diabetes_binary,<span class="st">"sex?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"diabetes?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>Diabetes_binary,<span class="st">"sex?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         sex?
 diabetes? female   male
       No  123563  94771
       Yes  18411  16935</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"diabetes?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>Diabetes_binary,<span class="st">"education level?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>education)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="st">"diabetes?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>Diabetes_binary,<span class="st">"education level?"</span> <span class="ot">=</span> diabetes_data<span class="sc">$</span>education)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         education level?
 diabetes? no school or only kindergarten elementary some high school
@@ -424,10 +461,10 @@ diabetes? high school or GED some college or technical school college grad
 <li>Looking at the contingency tables there’s a lot we can take a look at. There’s a total of 12,782 individuals that have high cholesterol and and smoke showcasing a potential relationship between these variables with diabetes prevalence. The results show that those who’ve participate in some form of physical activity that do not have no diabetes are 169,633 individuals. Physical activity is associated with a lower diabetes prevalence, potentially reinforcing how important it is to be active. As for sex, when looking at the distribution for females and males, they’re pretty consistent in terms of total proportion in the data set for those who do or do not have diabetes. For education, it does seem that with more schooling, there’s a decrease of those, proportionally, who have diabetes compared to those who have less schooling. This could reinforce that level of education could be important in diabetes prevention.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlations</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>diabetes_data <span class="sc">%&gt;%</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlations</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>diabetes_data <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 bmi    menthlth   physhlth         age
 bmi       1.00000000  0.08531016 0.12114111 -0.03661764
@@ -440,134 +477,134 @@ age      -0.03661764 -0.09206802 0.09912993  1.00000000</code></pre>
 <li>We can see that BMI, body mass index, have weak positive correlations with both mental (0.0853) and physical health (0.121), meaning that there is only a slight tendency for those with a higher bmi to report “not good” days of mental and physical health. This could potentially mean that BMI alone isn’t a good predictor of both mental and physical health days and we may have to look at other variables. The largest association we see is between mental and physical health with a correlation of 0.354. This is a moderate positive correlation, meaning that they’re somewhat related, indicating that those who reported more subpar mental health days, also reported not great physical health days. This suggests that those who typically experience poor mental health days tend to experience poor physical health days, possibly due to stress, depression, problems with emotions, etc. Next we’ll start creating plots and graphs to observe our data and relationships visually, looking at various distributions and relationship.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Side by Side bar plot of physical activity by diabetes status</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> physical, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Physical Activity by Diabetes Status"</span>,</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Side by Side Bar Plot"</span>) <span class="sc">+</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Physical Activity"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Side by Side bar plot of physical activity by diabetes status</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> physical, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Physical Activity by Diabetes Status"</span>,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Side by Side Bar Plot"</span>) <span class="sc">+</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Physical Activity"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="EDA_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="EDA_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>As seen above, this represents those who have participated in some physical activity within the last 30 days and diabetes status. Overall, there are less people who do not complete physical activity compared to those who do; however, there proportion of those that don’t do physical activity and have diabetes is higher than those who do complete physical activity and have diabetes. Additionally, there’s a large amount of individuals that do physical activity and don’t have diabetes.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stacked bar plot of high cholesterol by diabetes with a smokers status facet</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> chol, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> smoke) <span class="sc">+</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"High Cholesterol by Diabetes Status </span><span class="sc">\n</span><span class="st"> with Smokers Status Facet"</span>,</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Stacked Bar Plot"</span>) <span class="sc">+</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"High Cholesterol"</span>, <span class="at">y =</span> <span class="st">"Count (Individuals and their Diabetes Status)"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stacked bar plot of high cholesterol by diabetes with a smokers status facet</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> chol, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> smoke) <span class="sc">+</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"High Cholesterol by Diabetes Status </span><span class="sc">\n</span><span class="st"> with Smokers Status Facet"</span>,</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Stacked Bar Plot"</span>) <span class="sc">+</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"High Cholesterol"</span>, <span class="at">y =</span> <span class="st">"Count (Individuals and their Diabetes Status)"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="EDA_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="EDA_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>Here stacked bar plots do not represent proportion but rather total count. Here can see that the total amount of people who don’t smoke and have high cholesterol are higher than those who do smoke, whereas, the other 3 categories have a similar total count. Of the total counts, we can see that those with those high cholesterol, both smokers and non-smokers, have the higher counts of those with diabetes.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot for mental health and high cholesterol</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> chol, <span class="at">y =</span> physhlth, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"High Cholesterol by Subar Physical Health (of Past 30 Days) </span><span class="sc">\n</span><span class="st"> by Diabetes Status"</span>,</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Box Plot"</span>) <span class="sc">+</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"High Cholesterol"</span>, <span class="at">y =</span> <span class="st">"Subpar Physical Health (by Days)"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot for mental health and high cholesterol</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> chol, <span class="at">y =</span> physhlth, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"High Cholesterol by Subar Physical Health (of Past 30 Days) </span><span class="sc">\n</span><span class="st"> by Diabetes Status"</span>,</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Box Plot"</span>) <span class="sc">+</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"High Cholesterol"</span>, <span class="at">y =</span> <span class="st">"Subpar Physical Health (by Days)"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="EDA_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="EDA_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>This shows that those with high cholesterol for both with and without diabetes report more days where their physical health is “not good.” When looking at all categories, we can clearly see the horizontal mean line for those with high cholesterol and diabetes indicating that these individuals tend to report a slightly higher number of “not great” physical days compared to the other categories, which have their mean line at 0. The dots indicate data points that are considered to be outliers.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filled bar plot of education level by diabetes status</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> education, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Education Level by Diabetes Status"</span>,</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Filled Bar Plot"</span>) <span class="sc">+</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Education Levels"</span>, <span class="at">y =</span> <span class="st">"Proportion"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filled bar plot of education level by diabetes status</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> education, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Education Level by Diabetes Status"</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Filled Bar Plot"</span>) <span class="sc">+</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Education Levels"</span>, <span class="at">y =</span> <span class="st">"Proportion"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="EDA_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<p><img src="EDA_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>This filled bar plot above shows the proportion of education by diabetes status. Red represents the individual has no diabetes and blue represents yes. As seen above, those with no schooling or only kindergarten and elementary schooling have the highest proportions of those with diabetes. As previously mentioned, this could potentially indicate that more schooling or education could help individuals to be better informed regarding diabetes risks.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filled bar plot sex with diabetes status and general health facet</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> genhlth) <span class="sc">+</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Sex by Diabetes Status </span><span class="sc">\n</span><span class="st"> with General Health Status Facet"</span>,</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Filled Bar Plot"</span>) <span class="sc">+</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sex"</span>, <span class="at">y =</span> <span class="st">"Count (Individuals and their Diabetes Status)"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filled bar plot sex with diabetes status and general health facet</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> genhlth) <span class="sc">+</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Sex by Diabetes Status </span><span class="sc">\n</span><span class="st"> with General Health Status Facet"</span>,</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Filled Bar Plot"</span>) <span class="sc">+</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sex"</span>, <span class="at">y =</span> <span class="st">"Count (Individuals and their Diabetes Status)"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="EDA_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<p><img src="EDA_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>The above filled bar plot looks at the proportion of sex and general health status based on diabetes status. For the most part, for each general health status there are roughly a similar amount of those who have diabetes. As seen, those who reported fair and poor health status have the highest proportion of individuals who have diabetes compared to those whom reported excellent or very good health.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram of physical health across diabetes status</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> physhlth, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">position =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(physhlth)),</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">color=</span><span class="st">"blue"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Subpar Physical Health (of Past 30 Days) by </span><span class="sc">\n</span><span class="st"> across Diabetes Status"</span>,</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Histogram Plot"</span>) <span class="sc">+</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Subpar Physical Health (by Days)"</span>, <span class="at">y =</span> <span class="st">"Count (Individuals with Diabetes Status)"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram of physical health across diabetes status</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> physhlth, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">position =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(physhlth)),</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">color=</span><span class="st">"blue"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Subpar Physical Health (of Past 30 Days) by </span><span class="sc">\n</span><span class="st"> across Diabetes Status"</span>,</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Histogram Plot"</span>) <span class="sc">+</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Subpar Physical Health (by Days)"</span>, <span class="at">y =</span> <span class="st">"Count (Individuals with Diabetes Status)"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="EDA_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="EDA_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>Here the histogram shows that majority, a little less than 150,000, of individuals report 0 “not good” physical health days irregardless of diabetes status, meaning that most people report good physical health days. However it’s interesting to note that the next highest peak is of individuals reporting having up to 30 days of “not good” physical health days. From the dashed blue line, we can see that the mean reported subpar days for the sample is around 4 days of the month.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Hexbin plot of mental health and physical health across diabetes status</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> menthlth, <span class="at">y =</span> physhlth, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hex</span>() <span class="sc">+</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Subpar Mental Health (of Past 30 Days) by </span><span class="sc">\n</span><span class="st"> Subpar Physical Health (of Past 30 Days) </span><span class="sc">\n</span><span class="st"> across Diabetes Status"</span>,</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Hexbin Plot"</span>) <span class="sc">+</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Mental Health (by Days)"</span>, <span class="at">y =</span> <span class="st">"Physical Health (by Days)"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Hexbin plot of mental health and physical health across diabetes status</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> menthlth, <span class="at">y =</span> physhlth, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hex</span>() <span class="sc">+</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Subpar Mental Health (of Past 30 Days) by </span><span class="sc">\n</span><span class="st"> Subpar Physical Health (of Past 30 Days) </span><span class="sc">\n</span><span class="st"> across Diabetes Status"</span>,</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Hexbin Plot"</span>) <span class="sc">+</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Mental Health (by Days)"</span>, <span class="at">y =</span> <span class="st">"Physical Health (by Days)"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="EDA_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<p><img src="EDA_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>Here we have a hexbin plot of “not good” mental health days by “not good” physical health days across diabetes status. Each bin is a hexagon and the color represents the number of data points within each bin. For the lower reported mental and physical days (under 10), there is a concentration of those people that have diabetes. There’s a significant spread across both axes, showing variability across the diabetes status. Additionally, there are gaps in certain areas of the plot indicating there’s none or not many data points in the respective bin.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Density plot of BMI by diabetes status</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> bmi, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(bmi)),</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">color=</span><span class="st">"blue"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"BMI by Diabetes Status"</span>,</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Density Plot"</span>) <span class="sc">+</span></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"BMI"</span>, <span class="at">y =</span> <span class="st">"Density"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Density plot of BMI by diabetes status</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diabetes_data, <span class="fu">aes</span>(<span class="at">x =</span> bmi, <span class="at">fill =</span> Diabetes_binary)) <span class="sc">+</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(bmi)),</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">color=</span><span class="st">"blue"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"BMI by Diabetes Status"</span>,</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Density Plot"</span>) <span class="sc">+</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"BMI"</span>, <span class="at">y =</span> <span class="st">"Density"</span>, <span class="at">fill =</span> <span class="st">"Diabetes Status"</span>) <span class="sc">+</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="EDA_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<p><img src="EDA_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
